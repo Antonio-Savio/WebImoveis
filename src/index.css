@@ -1,0 +1,36 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body{
+  background-color: #f1f5f9;
+}
+
+[type="number"]::-webkit-inner-spin-button, 
+[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Remover spin-buttons no Firefox */
+[type="number"] {
+  -moz-appearance: textfield;
+}
+
+@layer components {
+  .container{
+    @apply w-full max-w-7xl mx-auto px-4 mb-4
+  }
+  
+  .input{
+    @apply w-full border-2 rounded-md h-11 px-2
+  }
+  
+  .errors{
+    @apply my-1 text-red-600
+  }
+  
+  .filter-options{
+    @apply py-1 px-5 rounded-lg bg-white border border-slate-300 cursor-pointer
+  }
+}
