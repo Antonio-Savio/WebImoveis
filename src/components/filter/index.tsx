@@ -8,6 +8,7 @@ import {
 import { db } from "../../services/firebaseConnection";
 import { addPropertiesIntoSnapshot } from "../../utils/mapSnapshot";
 import { PropertiesProps } from "../../pages/home";
+import { formatToBRLCurrency } from "../../utils/currencyFormat";
 
 interface FilterProps{
     isFilterOpened: boolean;
@@ -24,10 +25,10 @@ export function Filter({isFilterOpened, loadPosts, setProperties}: FilterProps){
     const [selectedMode, setSelectedMode] = useState<string | null>(null)
 
     useEffect(() => {
-        if (roomsFilter === null && bathroomsFilter === null && carSpaceFilter === null) {
+        if ([roomsFilter, bathroomsFilter, carSpaceFilter, selectedMode, minPrice, maxPrice].every(filter => filter === null)) {
           loadPosts()
         }
-      }, [roomsFilter, bathroomsFilter, carSpaceFilter])
+      }, [roomsFilter, bathroomsFilter, carSpaceFilter, selectedMode, minPrice, maxPrice])
       
       async function filterByRooms(roomsNumber: number){
         roomsFilter === roomsNumber ? setRoomsFilter(null) : setRoomsFilter(roomsNumber)
@@ -99,17 +100,19 @@ export function Filter({isFilterOpened, loadPosts, setProperties}: FilterProps){
       }
   
       async function filterByMinPrice(e: React.ChangeEvent<HTMLInputElement>){
-        const inputPrice = Number(e.target.value)
+        const inputPrice = e.target.value;
         setMaxPrice(null)
         setSelectedMode(null)
         setRoomsFilter(null)
         setBathroomsFilter(null)
         setCarSpaceFilter(null)
-        setMinPrice(inputPrice)
+
+        const formattedValue = formatToBRLCurrency(inputPrice);
+        setMinPrice(formattedValue)
   
         let queryRef;
   
-        queryRef = query(collection(db, "imóveis"), where("price", ">=", inputPrice));
+        queryRef = query(collection(db, "imóveis"), where("price", ">=", Number(inputPrice.replace(/\D/g, '')) / 100));
         
         const querySnapshot = await getDocs(queryRef)
   
@@ -119,17 +122,20 @@ export function Filter({isFilterOpened, loadPosts, setProperties}: FilterProps){
       }
   
       async function filterByMaxPrice(e: React.ChangeEvent<HTMLInputElement>){
-        const inputPrice = Number(e.target.value)
+        const inputPrice = e.target.value;
         setMinPrice(null)
         setSelectedMode(null)
         setRoomsFilter(null)
         setBathroomsFilter(null)
         setCarSpaceFilter(null)
-        setMaxPrice(inputPrice)
+
+        const formattedValue = formatToBRLCurrency(inputPrice);
+
+        setMaxPrice(formattedValue)
   
         let queryRef;
   
-        queryRef = query(collection(db, "imóveis"), where("price", "<=", inputPrice));
+        queryRef = query(collection(db, "imóveis"), where("price", "<=", Number(inputPrice.replace(/\D/g, '')) / 100));
         
         const querySnapshot = await getDocs(queryRef)
   
@@ -137,6 +143,10 @@ export function Filter({isFilterOpened, loadPosts, setProperties}: FilterProps){
   
         setProperties(listOfProperties);
       }
+
+      // useEffect(() => {
+      //   setSelectedMode()
+      // }, [selectedMode])
   
       async function filterByModality(e: React.ChangeEvent<HTMLInputElement>){
         const value = e.target.value;
@@ -147,6 +157,8 @@ export function Filter({isFilterOpened, loadPosts, setProperties}: FilterProps){
         setBathroomsFilter(null)
         setCarSpaceFilter(null)
 
+        console.log(selectedMode);
+        
         let queryRef;
   
         queryRef = query(collection(db, "imóveis"), where("modality", "==", value));
@@ -261,7 +273,7 @@ export function Filter({isFilterOpened, loadPosts, setProperties}: FilterProps){
                 <div className="relative flex items-center">
                   <span className="absolute ml-2">R$</span>
                   <input 
-                    type="number"
+                    type="text"
                     value={minPrice === null ? '' : minPrice}
                     onChange={ e => filterByMinPrice(e) }
                     min={0}
@@ -275,7 +287,7 @@ export function Filter({isFilterOpened, loadPosts, setProperties}: FilterProps){
                 <div className="relative flex items-center">
                   <span className="absolute ml-2">R$</span>
                   <input 
-                    type="number"
+                    type="text"
                     value={maxPrice === null ? '' : maxPrice}
                     onChange={ e => filterByMaxPrice(e) }
                     min={0}
