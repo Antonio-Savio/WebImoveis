@@ -14,9 +14,10 @@ interface FilterProps{
     isFilterOpened: boolean;
     loadPosts: () => void;
     setProperties: React.Dispatch<React.SetStateAction<PropertiesProps[]>>;
+    city: string;
 }
 
-export function Filter({isFilterOpened, loadPosts, setProperties}: FilterProps){
+export function Filter({isFilterOpened, loadPosts, setProperties, city}: FilterProps){
     const [roomsFilter, setRoomsFilter] = useState<number | null>(null)
     const [bathroomsFilter, setBathroomsFilter] = useState<number | null>(null)
     const [carSpaceFilter, setCarSpaceFilter] = useState<number | null>(null)
@@ -37,16 +38,31 @@ export function Filter({isFilterOpened, loadPosts, setProperties}: FilterProps){
         setSelectedMode(null)
         setBathroomsFilter(null)
         setCarSpaceFilter(null)
-  
+
         let queryRef;
-  
-        if (roomsNumber === 3) {
+
+        if (city.length > 0 && roomsNumber === 3){
+          queryRef = query(
+            collection(db, "imóveis"),
+            where("city", ">=", city.toUpperCase()),
+            where("city", "<=", city.toUpperCase() + '\uf8ff'),
+            where("rooms", ">=", 3),
+          );
+        } else if (city.length > 0 && roomsNumber != 3){
+          queryRef = query(
+            collection(db, "imóveis"),
+            where("city", ">=", city.toUpperCase()),
+            where("city", "<=", city.toUpperCase() + '\uf8ff'),
+            where("rooms", "==", roomsNumber),
+          );
+        } else if (roomsNumber === 3) {
           queryRef = query(collection(db, "imóveis"), where("rooms", ">=", 3));
         } else {
           queryRef = query(collection(db, "imóveis"), where("rooms", "==", roomsNumber));
         }
-  
+        
         const querySnapshot = await getDocs(queryRef)
+        console.log(querySnapshot.docs);
   
         const listOfProperties = addPropertiesIntoSnapshot(querySnapshot)
   
