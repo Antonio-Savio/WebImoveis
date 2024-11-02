@@ -10,6 +10,7 @@ import {
 import { Link } from "react-router-dom"
 import { TbRulerMeasure } from "react-icons/tb";
 import { FaBed, FaFilter, FaSearch } from "react-icons/fa";
+import { AiOutlineLoading } from "react-icons/ai";
 import { RxDividerVertical } from "react-icons/rx";
 import { capitalizeText } from '../../utils/capitalize'
 import { addPropertiesIntoSnapshot } from "../../utils/mapSnapshot";
@@ -42,6 +43,7 @@ export function Home() {
     const [loadImages, setloadImages] = useState<string[]>([])
     const [input, setInput] = useState("")
     const [isFilterOpened, setIsFilterOpened] = useState(false)
+    const [loading, setLoading] = useState(true)
     // const [roomsFilter, setRoomsFilter] = useState<number | null>(null)
     // const [bathroomsFilter, setBathroomsFilter] = useState<number | null>(null)
     // const [carSpaceFilter, setCarSpaceFilter] = useState<number | null>(null)
@@ -53,6 +55,7 @@ export function Home() {
     }, [])
 
     function loadPosts(){
+      setLoading(true)
       const propertiesRef = collection(db, "imóveis")
       const queryRef = query(propertiesRef, orderBy("created", "desc"))
 
@@ -60,7 +63,10 @@ export function Home() {
       .then((snapshot) => {
         const listOfProperties = addPropertiesIntoSnapshot(snapshot)
 
-        setProperties(listOfProperties);
+        setTimeout(() => {
+          setProperties(listOfProperties);
+          setLoading(false)
+        }, 400)
       })
     }
 
@@ -76,6 +82,7 @@ export function Home() {
 
       setProperties([])
       setloadImages([])
+      setLoading(true)
 
       const q = query(collection(db, "imóveis"),
       where("city", ">=", input.toUpperCase()),
@@ -86,7 +93,10 @@ export function Home() {
 
       const listOfProperties = addPropertiesIntoSnapshot(querySnapshot)
 
-      setProperties(listOfProperties);
+      setTimeout(() => {
+        setProperties(listOfProperties);
+        setLoading(false)
+      }, 400)
     }
 
     // useEffect(() => {
@@ -219,7 +229,7 @@ export function Home() {
           </button>
         </section>
 
-        <Filter isFilterOpened={isFilterOpened} loadPosts={loadPosts} setProperties={setProperties} />
+        <Filter isFilterOpened={isFilterOpened} loadPosts={loadPosts} setProperties={setProperties} city={input} />
         {/* <section className={`w-fit overflow-hidden mx-auto bg-white rounded-lg flex gap-4 justify-center items-center flex-wrap transition-all duration-700 ${isFilterOpened ? "max-h-[400px] opacity-100 p-4 mt-4" : "max-h-0 p-0 mt-0 opacity-0"}`}>
           <div>
             <div>Modalidade</div>
@@ -352,7 +362,15 @@ export function Home() {
         </h1>
 
         {properties.length === 0 ? (
-          <p className="text-center text-red-500 mt-8 font-bold text-xl">Nenhum imóvel encontrado!</p>
+          loading ? (
+            <div className="flex justify-center mt-8 text-indigo-400">
+              <AiOutlineLoading size={35} className="animate-spin" />
+            </div>
+          ) : (
+            <p className="text-center text-red-500 mt-8 font-bold text-xl">
+              Nenhum imóvel encontrado!
+            </p>
+          )
         ) : (
           <main className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
             {
