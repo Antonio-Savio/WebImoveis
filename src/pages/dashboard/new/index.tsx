@@ -10,6 +10,7 @@ import { storage, db } from '../../../services/firebaseConnection'
 import { ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage'
 import { addDoc, collection } from 'firebase/firestore';
 import toast from 'react-hot-toast'
+import { formatToBRLCurrency } from '../../../utils/currencyFormat'
 
 const schema = z.object({
   title: z.string().min(1, 'O título é obrigatório'),
@@ -64,11 +65,6 @@ interface ImageItemProps{
   url: string;
 }
 
-function formatToBRLCurrency(value: string) {
-  const numericValue = Number(value.replace(/\D/g, '')) / 100;
-  return numericValue.toLocaleString('pt-BR', {minimumFractionDigits: 2, maximumFractionDigits: 2 });
-}
-
 export function New() {
     const { user } = useContext(AuthContext)
     const [propertyImages, setPropertyImages] = useState<ImageItemProps[]>([]);
@@ -118,6 +114,11 @@ export function New() {
       })
       .then(() => {
         reset();
+        setArea('')
+        setPrice('');
+        setIptu('');
+        setCond('');
+        setPhone('');
         setPropertyImages([])
         localStorage.setItem('propertyImages', JSON.stringify([]))
         console.log('Cadastrado com sucesso!');
@@ -454,7 +455,7 @@ export function New() {
                 value={phone}
                 id="whatsapp"
                 className='input'
-                placeholder='Ex: 021998877665'
+                placeholder='Ex: (21) 99887-7665'
               />
               {errors.whatsapp && <p className='errors'>{errors.whatsapp.message}</p>}
             </div>
