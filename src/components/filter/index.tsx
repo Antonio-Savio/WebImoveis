@@ -77,12 +77,6 @@ export function Filter({isFilterOpened, loadPosts, setProperties, city}: FilterP
         setCarSpaceFilter(null)
   
         let queryRef;
-  
-        // if (bathroomsNumber === 3) {
-        //   queryRef = query(collection(db, "imóveis"), where("bathrooms", ">=", 3));
-        // } else {
-        //   queryRef = query(collection(db, "imóveis"), where("bathrooms", "==", bathroomsNumber));
-        // }
 
         if (city.length > 0 && bathroomsNumber === 3){
           queryRef = query(
@@ -121,12 +115,6 @@ export function Filter({isFilterOpened, loadPosts, setProperties, city}: FilterP
   
         let queryRef;
   
-        // if (carSpaceNumber === 3) {
-        //   queryRef = query(collection(db, "imóveis"), where("parkingSpace", ">=", 3));
-        // } else {
-        //   queryRef = query(collection(db, "imóveis"), where("parkingSpace", "==", carSpaceNumber));
-        // }
-
         if (city.length > 0 && carSpaceNumber === 3){
           queryRef = query(
             collection(db, "imóveis"),
@@ -198,8 +186,6 @@ export function Filter({isFilterOpened, loadPosts, setProperties, city}: FilterP
   
         let queryRef;
   
-        // queryRef = query(collection(db, "imóveis"), where("price", "<=", Number(inputPrice.replace(/\D/g, '')) / 100));
-
         if (city.length > 0){
           queryRef = query(
             collection(db, "imóveis"),
