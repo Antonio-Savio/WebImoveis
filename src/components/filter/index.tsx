@@ -62,8 +62,7 @@ export function Filter({isFilterOpened, loadPosts, setProperties, city}: FilterP
         }
         
         const querySnapshot = await getDocs(queryRef)
-        console.log(querySnapshot.docs);
-  
+
         const listOfProperties = addPropertiesIntoSnapshot(querySnapshot)
   
         setProperties(listOfProperties);
@@ -79,7 +78,27 @@ export function Filter({isFilterOpened, loadPosts, setProperties, city}: FilterP
   
         let queryRef;
   
-        if (bathroomsNumber === 3) {
+        // if (bathroomsNumber === 3) {
+        //   queryRef = query(collection(db, "imóveis"), where("bathrooms", ">=", 3));
+        // } else {
+        //   queryRef = query(collection(db, "imóveis"), where("bathrooms", "==", bathroomsNumber));
+        // }
+
+        if (city.length > 0 && bathroomsNumber === 3){
+          queryRef = query(
+            collection(db, "imóveis"),
+            where("city", ">=", city.toUpperCase()),
+            where("city", "<=", city.toUpperCase() + '\uf8ff'),
+            where("bathrooms", ">=", 3),
+          );
+        } else if (city.length > 0 && bathroomsNumber != 3){
+          queryRef = query(
+            collection(db, "imóveis"),
+            where("city", ">=", city.toUpperCase()),
+            where("city", "<=", city.toUpperCase() + '\uf8ff'),
+            where("bathrooms", "==", bathroomsNumber),
+          );
+        } else if (bathroomsNumber === 3) {
           queryRef = query(collection(db, "imóveis"), where("bathrooms", ">=", 3));
         } else {
           queryRef = query(collection(db, "imóveis"), where("bathrooms", "==", bathroomsNumber));
@@ -102,7 +121,27 @@ export function Filter({isFilterOpened, loadPosts, setProperties, city}: FilterP
   
         let queryRef;
   
-        if (carSpaceNumber === 3) {
+        // if (carSpaceNumber === 3) {
+        //   queryRef = query(collection(db, "imóveis"), where("parkingSpace", ">=", 3));
+        // } else {
+        //   queryRef = query(collection(db, "imóveis"), where("parkingSpace", "==", carSpaceNumber));
+        // }
+
+        if (city.length > 0 && carSpaceNumber === 3){
+          queryRef = query(
+            collection(db, "imóveis"),
+            where("city", ">=", city.toUpperCase()),
+            where("city", "<=", city.toUpperCase() + '\uf8ff'),
+            where("parkingSpace", ">=", 3),
+          );
+        } else if (city.length > 0 && carSpaceNumber != 3){
+          queryRef = query(
+            collection(db, "imóveis"),
+            where("city", ">=", city.toUpperCase()),
+            where("city", "<=", city.toUpperCase() + '\uf8ff'),
+            where("parkingSpace", "==", carSpaceNumber),
+          );
+        } else if (carSpaceNumber === 3) {
           queryRef = query(collection(db, "imóveis"), where("parkingSpace", ">=", 3));
         } else {
           queryRef = query(collection(db, "imóveis"), where("parkingSpace", "==", carSpaceNumber));
@@ -128,7 +167,15 @@ export function Filter({isFilterOpened, loadPosts, setProperties, city}: FilterP
   
         let queryRef;
   
-        queryRef = query(collection(db, "imóveis"), where("price", ">=", Number(inputPrice.replace(/\D/g, '')) / 100));
+        if (city.length > 0){
+          queryRef = query(
+            collection(db, "imóveis"),
+            where("city", ">=", city.toUpperCase()),
+            where("city", "<=", city.toUpperCase() + '\uf8ff'),
+            where("price", ">=", Number(inputPrice.replace(/\D/g, '')) / 100));
+        } else {
+          queryRef = query(collection(db, "imóveis"), where("price", ">=", Number(inputPrice.replace(/\D/g, '')) / 100));
+        }
         
         const querySnapshot = await getDocs(queryRef)
   
@@ -151,7 +198,17 @@ export function Filter({isFilterOpened, loadPosts, setProperties, city}: FilterP
   
         let queryRef;
   
-        queryRef = query(collection(db, "imóveis"), where("price", "<=", Number(inputPrice.replace(/\D/g, '')) / 100));
+        // queryRef = query(collection(db, "imóveis"), where("price", "<=", Number(inputPrice.replace(/\D/g, '')) / 100));
+
+        if (city.length > 0){
+          queryRef = query(
+            collection(db, "imóveis"),
+            where("city", ">=", city.toUpperCase()),
+            where("city", "<=", city.toUpperCase() + '\uf8ff'),
+            where("price", "<=", Number(inputPrice.replace(/\D/g, '')) / 100));
+        } else {
+          queryRef = query(collection(db, "imóveis"), where("price", "<=", Number(inputPrice.replace(/\D/g, '')) / 100));
+        }
         
         const querySnapshot = await getDocs(queryRef)
   
@@ -159,10 +216,6 @@ export function Filter({isFilterOpened, loadPosts, setProperties, city}: FilterP
   
         setProperties(listOfProperties);
       }
-
-      // useEffect(() => {
-      //   setSelectedMode()
-      // }, [selectedMode])
   
       async function filterByModality(e: React.ChangeEvent<HTMLInputElement>){
         const value = e.target.value;
@@ -172,12 +225,18 @@ export function Filter({isFilterOpened, loadPosts, setProperties, city}: FilterP
         setRoomsFilter(null)
         setBathroomsFilter(null)
         setCarSpaceFilter(null)
-
-        console.log(selectedMode);
         
         let queryRef;
-  
-        queryRef = query(collection(db, "imóveis"), where("modality", "==", value));
+
+        if (city.length > 0){
+          queryRef = query(
+            collection(db, "imóveis"),
+            where("city", ">=", city.toUpperCase()),
+            where("city", "<=", city.toUpperCase() + '\uf8ff'),
+            where("modality", "==", value))
+        } else{
+          queryRef = query(collection(db, "imóveis"), where("modality", "==", value));
+        }
         
         const querySnapshot = await getDocs(queryRef)
   
