@@ -6,6 +6,9 @@ import { useNavigate, useParams } from "react-router-dom"
 import { db } from "../../services/firebaseConnection"
 import { getDoc, doc } from 'firebase/firestore'
 import { Swiper, SwiperSlide } from 'swiper/react';
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
 import { capitalizeText } from "../../utils/capitalize";
 
 interface PropertyProps{

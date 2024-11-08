@@ -34,3 +34,12 @@ body{
     @apply py-1 px-5 rounded-lg bg-white border border-slate-300 cursor-pointer
   }
 }
+
+.swiper-button-next,
+.swiper-button-prev {
+  @apply text-main;
+}
+
+.swiper-pagination-bullet-active {
+  @apply bg-main;
+}
