@@ -14,7 +14,7 @@ export function Header() {
           <img 
             src={logo}
             alt="Logo do site"
-            className='w-24'
+            className='w-20'
           />
         </Link>
 
