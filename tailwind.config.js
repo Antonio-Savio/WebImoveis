@@ -7,7 +7,7 @@ export default {
   theme: {
     extend: {
       colors: {
-        main: '#818181'
+        main: '#99068f'
       },
 
       screens: {
