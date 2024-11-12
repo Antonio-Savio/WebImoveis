@@ -8,6 +8,7 @@ import { FiTrash } from 'react-icons/fi';
 import { TbRulerMeasure } from "react-icons/tb";
 import { FaBed } from "react-icons/fa";
 import { RxDividerVertical } from "react-icons/rx";
+import { addPropertiesIntoSnapshot } from "../../utils/mapSnapshot"
 import { capitalizeText } from "../../utils/capitalize"
 
 interface PropertiesProps{
@@ -45,24 +46,7 @@ export function Dashboard() {
 
         getDocs(queryRef)
         .then((snapshot) => {
-          let listProperties = [] as PropertiesProps[]
-
-          snapshot.forEach( doc => {
-            listProperties.push({
-              id: doc.id,
-              title: doc.data().title,
-              uid: doc.data().uid,
-              price: doc.data().price,
-              cond: doc.data().cond,
-              city: doc.data().city,
-              neighborhood: doc.data().neighborhood,
-              address: doc.data().address,
-              area: doc.data().area,
-              modality: doc.data().modality,
-              rooms: doc.data().rooms,
-              images: doc.data().images 
-            })
-          })
+          let listProperties = addPropertiesIntoSnapshot(snapshot)
 
           setProperties(listProperties);
         })
