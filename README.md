@@ -52,3 +52,27 @@ WebImóveis is a platform where you can either find an ideal property for you, o
 - **Swiper**: used for presentation in the form of slides in a modern, stylized and easy to implement way.
 - **react-hook-form with zod**: to create multiple inputs without React States, and implement validations.
 - **react-hot-toast**: displays error/success messages.
+
+## How to Run the Project
+### Requirements 🚀
+- Node.js installed
+- npm ou yarn package manager
+
+### Steps
+1. Clone the repository:
+
+   ```bash
+   git clone https://github.com/Antonio-Savio/WebImoveis.git
+   ```
+2. Install dependencies:
+
+   ```bash
+   cd WebImoveis
+   npm install
+   ```
+3. Run the project locally:
+
+   ```bash
+   npm run dev
+   ```
+4. Access the application at http://localhost:5173.
