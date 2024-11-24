@@ -6,7 +6,10 @@ WebImóveis is a platform where you can either find an ideal property for you, o
 [WebImóveis](https://webimoveis.vercel.app/)
 
 ## Desktop preview 🖥️
-<img src="./src/assets/WebImoveis-gif.gif" alt="Preview on desktop version"/>
+<video width="500" controls autoplay>
+  <source src="src/assets/video-WebImoveis.mp4" type="video/mp4">
+Your browser does not support the video tag.
+</video>
 
 ## Mobile preview 📱
 <img width="300px" src="./src/assets/mobile-version-webimoveis.gif" alt="Preview on mobile version"/>
