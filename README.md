@@ -45,6 +45,7 @@ WebImóveis is a platform where you can either find an ideal property for you, o
 
 ## Used Technologies ⚙️
 - **React JS**: to build the interface.
+- **TypeScript**: ensures type safety, catching errors during development, improving code quality, and enhancing developer productivity.
 - **Firebase**: *Authentication* to sign in and sign up users. *Storage* to store the properties images. *Firestore* as the app database.
 - **Tailwind CSS**: create a pixel-perfect styling.
 - **Context API**: allowing auth data sharing between components without explicit passing of props, and facilitating global state management.
@@ -70,9 +71,25 @@ WebImóveis is a platform where you can either find an ideal property for you, o
    cd WebImoveis
    npm install
    ```
-3. Run the project locally:
+3. Create a .env file in the project root and add all your Firebase configurations:
+   ```bash
+   VITE_API_KEY='YOUR_API_KEY_HERE'
+   VITE_AUTH_DOMAIN='YOUR_AUTH_DOMAIN_HERE'
+   VITE_PROJECT_ID='YOUR_PROJECT_ID_HERE'
+   VITE_STORAGE_BUCKET='YOUR_STORAGE_BUCKET_HERE'
+   VITE_MESSAGING_SENDER_ID='YOUR_MESSAGING_SENDER_ID_HERE'
+   VITE_APP_ID='YOUR_APP_ID_HERE'
+   ```
+
+4. Run the project locally:
 
    ```bash
    npm run dev
    ```
-4. Access the application at http://localhost:5173.
+5. Access the application at http://localhost:5173.
+
+## License 📄
+
+This project is licensed under the [MIT License](LICENSE).
+
+You are free to use, modify, and distribute this software for personal and commercial purposes, as long as the original license and copyright notice are included. There is no warranty for the code provided, and the author is not liable for any issues arising from the use of this software.
